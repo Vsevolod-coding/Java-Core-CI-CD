@@ -30,7 +30,7 @@ jobs:
         sleep 60
 
     - name: Run health check
-      run: curl -f http://localhost:8087 || exit 1
+      run: curl -f http://127.0.0.1:4280 || exit 1
 
     - name: Shut down containers
       run: docker-compose down
