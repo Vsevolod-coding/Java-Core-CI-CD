@@ -29,9 +29,6 @@ jobs:
         docker-compose up -d --build
         sleep 60
 
-    - name: Check Docker logs
-      run: docker logs $(docker ps -q)
-
     - name: Run health check
       run: curl -f http://localhost:8087 || exit 1
 
