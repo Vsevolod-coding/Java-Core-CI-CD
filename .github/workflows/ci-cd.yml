@@ -27,10 +27,13 @@ jobs:
     - name: Build and run DVWA container
       run: |
         docker-compose up -d --build
-        sleep 30
+        sleep 60
+
+    - name: Check Docker logs
+      run: docker logs $(docker ps -q)
 
     - name: Run health check
-      run: curl -f http://localhost || exit 1
+      run: curl -f http://localhost:8087 || exit 1
 
     - name: Shut down containers
       run: docker-compose down
