@@ -1,0 +1,41 @@
+name: CI/CD Pipeline for DVWA Docker
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:19.03.12
+        options: --privileged
+        ports:
+          - 80:80
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build and run DVWA container
+      run: |
+        docker-compose -f docker-compose.yml up -d --build
+        sleep 30
+
+    - name: Run tests
+      run: |
+        curl http://localhost:80 || exit 1
+
+    - name: Shut down containers
+      run: |
+        docker-compose down
+
